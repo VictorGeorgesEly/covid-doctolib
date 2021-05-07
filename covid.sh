@@ -5,19 +5,19 @@ endUrlCrozon=\&visit_motive_ids\=2737067\&agenda_ids\=448538-448537-461784-41146
 startUrlChateaulin=https://partners.doctolib.fr/availabilities.json\?start_date\=
 endUrlChateaulin=\&visit_motive_ids\=2737067\&agenda_ids\=448541-461752-411462-411460-448542-410749-452425-453262-464345-466508\&insurance_sector\=public\&practice_ids\=164629\&destroy_temporary\=true\&limit\=7
 date=$(date +"%Y-%m-%m")
-crozon=$(curl -s $startUrlCrozon$date$endUrlCrozon)
-chateaulin=$(curl -s $startUrlChateaulin$date$endUrlChateaulin)
+crozon=$(curl -s "$startUrlCrozon""$date""$endUrlCrozon")
+chateaulin=$(curl -s "$startUrlChateaulin""$date""$endUrlChateaulin")
 counter=0
 
-echo $crozon
-echo $chateaulin
+echo "$crozon"
+echo "$chateaulin"
 echo $counter
 
 while [[ $crozon == *"Aucune disponibilité en ligne."* ]] || [[ $chateaulin == *"Aucune disponibilité en ligne."* ]]
 do
     date=$(date +"%Y-%m-%m")
-    crozon=$(curl -s $startUrlCrozon$date$endUrlCrozon)
-    chateaulin=$(curl -s $startUrlChateaulin$date$endUrlChateaulin)
+    crozon=$(curl -s "$startUrlCrozon""$date""$endUrlCrozon")
+    chateaulin=$(curl -s "$startUrlChateaulin""$date""$endUrlChateaulin")
     if [[ $crozon != *"Aucune disponibilité en ligne."* ]]; then
       echo "y'a du vaccin sur Crozon !!"
     fi
@@ -26,6 +26,6 @@ do
         echo "y'a du vaccin sur Chateaulin !!"
     fi
     sleep $(( ( RANDOM % 5 )  + 1 ))
-    let counter++
-    echo $counter
+    (( counter++ )) || true
+    echo "$counter"
 done
